@@ -1,6 +1,6 @@
+from tensorflow.keras.layers import Conv2D, MaxPooling2D
 from tensorflow.python.keras.models import Model
 from tensorflow.python.layers.convolutional import Conv2D
-from tensorflow.python.layers.pooling import MaxPooling2D
 
 
 class Encoder(Model):
