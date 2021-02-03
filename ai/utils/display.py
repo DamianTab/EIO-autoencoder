@@ -26,3 +26,17 @@ def display_ycbcr_batch_pyplot(batch):
 def display_bw_batch_pyplot(batch):
     for tensor in batch:
         display_bw_tensor_pyplot(tensor)
+
+
+def display_compare_results_pyplot(originals, predictions, display_count=3):
+    for i in range(display_count):
+        fix, (ax1, ax2) = plt.subplots(1, 2)
+        orig_rgb = tfio.experimental.color.ycbcr_to_rgb(tensor2image(originals[i]))
+        pred_rgb = tfio.experimental.color.ycbcr_to_rgb(tensor2image(predictions[i]))
+        ax1.axis('off')
+        ax1.set_title('Expected output')
+        ax1.imshow(orig_rgb)
+        ax2.axis('off')
+        ax2.set_title('Actual output')
+        ax2.imshow(pred_rgb)
+        plt.show()

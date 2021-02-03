@@ -10,4 +10,5 @@ from .display import \
     display_bw_tensor_pyplot, \
     display_ycbcr_tensor_pyplot, \
     display_bw_batch_pyplot, \
-    display_ycbcr_batch_pyplot
+    display_ycbcr_batch_pyplot, \
+    display_compare_results_pyplot
