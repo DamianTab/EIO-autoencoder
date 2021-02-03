@@ -1,5 +1,5 @@
-import tensorflow_io as tfio
 import matplotlib.pyplot as plt
+import tensorflow_io as tfio
 
 from .image_processing import tensor2image
 

@@ -14,7 +14,7 @@ class Decoder(Model):
         self.conv_3 = Conv2D(8, 3, activation='relu', padding='same')
         self.upsampling_3 = UpSampling2D((2, 2))
 
-        self.conv_out = Conv2D(2, 3, activation='tanh', padding='same')
+        self.conv_out = Conv2D(3, 3, activation='tanh', padding='same')
 
     def call(self, inputs):
         x = self.conv_1(inputs)

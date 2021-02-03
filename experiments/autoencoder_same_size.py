@@ -3,6 +3,7 @@ import time
 import tensorflow as tf
 
 import ai
+from ai.utils import display_ycbcr_batch_pyplot
 
 
 # @tf.function
@@ -31,25 +32,23 @@ if __name__ == '__main__':
     # tensor_org - is the original colorful image in YCbCr color space; expected network outputs
     # tensor_bw - is the black and white representation; network input
     # load dataset
+
     # dataset_train, dataset_test = ai.datasets.load_dataset(train_examples_count=1024, validation_examples_count=128,
     #                                                        batch_size=64)
-    dataset_train, dataset_test = ai.datasets.load_dataset(train_examples_count=10, validation_examples_count=10,
-                                                           batch_size=5)
+    dataset_train, dataset_test = ai.datasets.load_dataset(train_examples_count=1024, validation_examples_count=10,
+                                                           batch_size=2)
 
     model = ai.models.AutoEncoder()
     optimizer = tf.optimizers.Adam(0.001)
 
     start = time.time()
     for batch in dataset_train:
-
-        # po co tam był wcześniej dodawany dimension ?
-        # inputs = tf.squeeze(batch['tensor_bw'], [4])
-        # features = tf.squeeze(batch['tensor_org'], [4])
-
         inputs = batch['tensor_bw']
-        features = batch['tensor_org'][:, :, :, 1:]
-
+        features = batch['tensor_org']
         outputs, loss = train(optimizer, model, inputs, features)
-        print(loss)
+
+    display_ycbcr_batch_pyplot(features)
+    display_ycbcr_batch_pyplot(outputs)
+    print(outputs.shape)
     end = time.time()
     print(f'time: {(end - start)}')

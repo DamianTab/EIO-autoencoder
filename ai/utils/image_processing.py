@@ -20,7 +20,7 @@ def prepare_image_as_input(x):
     }
 
 
-def tensor2image(tensor):
-    img = tf.squeeze(tensor, axis=-1)
+def tensor2image(img):
+    # img = tf.squeeze(tensor, axis=-1)
     img *= 255
     return tf.cast(img, tf.uint8)
