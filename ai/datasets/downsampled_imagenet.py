@@ -4,8 +4,9 @@ from ..utils import prepare_image_as_input
 
 
 # This dataset is quite large so we can limit element count to speed up development
-def load_dataset(train_examples_count=6400, validation_examples_count=640, batch_size=64):
-    datasets, info = tfds.load('downsampled_imagenet/64x64', with_info=True)
+def load_dataset(train_examples_count=10, validation_examples_count=10, batch_size=5):
+    # datasets, info = tfds.load('downsampled_imagenet/64x64', with_info=True)
+    datasets, info = tfds.load('imagenet_resized/8x8', with_info=True)
     dataset_train = datasets['train']
     dataset_validation = datasets['validation']
 
@@ -28,8 +29,13 @@ def load_dataset(train_examples_count=6400, validation_examples_count=640, batch
         .batch(batch_size)
 
     # Zostawiam tymczasowo, żeby było łatwo debuggerem podejrzeć jak wyglądają elementy w batchu
-    # from ..utils import display_ycbcr_batch_pyplot, display_bw_batch_pyplot
+    from ..utils import display_ycbcr_batch_pyplot, display_bw_batch_pyplot
     # for x in tfds.as_numpy(dataset_train):
+    #     # display_bw_batch_pyplot(x['tensor_bw'])
+    #     # display_ycbcr_batch_pyplot(x['tensor_org'])
+    #     pass
+
+    # for x in dataset_train:
     #     display_bw_batch_pyplot(x['tensor_bw'])
     #     display_ycbcr_batch_pyplot(x['tensor_org'])
     #     pass

@@ -1,16 +1,24 @@
+import time
+
 import tensorflow as tf
+
 import ai
-import matplotlib.pyplot as plt
-import numpy as np
-
-@tf.function
-def query(images, classes, training):
-    pass
 
 
-@tf.function
-def train(images, classes):
-    pass
+# @tf.function
+def query(model, inputs, features):
+    outputs = model(inputs)
+    loss = ai.losses.mse_loss(outputs, features)
+    return outputs, loss
+
+
+# @tf.function
+def train(optimizer, model, inputs, features):
+    with tf.GradientTape() as tape:
+        outputs, loss = query(model, inputs, features)
+    grads = tape.gradient(loss, model.trainable_variables)
+    optimizer.apply_gradients(zip(grads, model.trainable_variables))
+    return outputs, loss
 
 
 if __name__ == '__main__':
@@ -20,31 +28,28 @@ if __name__ == '__main__':
 
     # Elements in those datasets represents batches.
     # Each batch is a dictionary that has two keys:
-    # tensor_org - is the original colorful image in YCbCr color space; expected network output
+    # tensor_org - is the original colorful image in YCbCr color space; expected network outputs
     # tensor_bw - is the black and white representation; network input
     # load dataset
-    dataset_train, dataset_test = ai.datasets.load_dataset()
+    # dataset_train, dataset_test = ai.datasets.load_dataset(train_examples_count=1024, validation_examples_count=128,
+    #                                                        batch_size=64)
+    dataset_train, dataset_test = ai.datasets.load_dataset(train_examples_count=10, validation_examples_count=10,
+                                                           batch_size=5)
 
+    model = ai.models.AutoEncoder()
+    optimizer = tf.optimizers.Adam(0.001)
 
-    # # train
-    # autoencoder = ai.models.AutoEncoder()
-    # autoencoder.compile(optimizer='adam',
-    #                     loss='mean_squared_error',
-    #                     metrics=['accuracy'])
-    # autoencoder.fit(dataset_train, x_train, batch_size=64, epochs=2)
-    #
-    #
-    # # result
-    # x_plot = x_test.astype('float32') / 255.
-    # x_plot = np.reshape(x_plot, (len(x_test), 28, 28))
-    # x_predicted = autoencoder.predict(x_test)
-    # x_predicted = x_predicted.astype('float32') / 255.
-    # x_predicted = np.reshape(x_predicted, newshape=(x_predicted.shape[0], 28, 28))
-    #
-    #
-    # fig, ax = plt.subplots(nrows=10, ncols=2)
-    # for i, row in enumerate(ax):
-    #     row[0].imshow(x_plot[i, :, :], cmap='gray')
-    #     row[1].imshow(x_predicted[i, :, :], cmap='gray')
-    # plt.show()
-    #
+    start = time.time()
+    for batch in dataset_train:
+
+        # po co tam był wcześniej dodawany dimension ?
+        # inputs = tf.squeeze(batch['tensor_bw'], [4])
+        # features = tf.squeeze(batch['tensor_org'], [4])
+
+        inputs = batch['tensor_bw']
+        features = batch['tensor_org'][:, :, :, 1:]
+
+        outputs, loss = train(optimizer, model, inputs, features)
+        print(loss)
+    end = time.time()
+    print(f'time: {(end - start)}')
