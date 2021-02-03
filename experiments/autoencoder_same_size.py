@@ -40,15 +40,18 @@ if __name__ == '__main__':
 
     model = ai.models.AutoEncoder()
     optimizer = tf.optimizers.Adam(0.001)
+    epoch_count = 2
 
-    start = time.time()
-    for batch in dataset_train:
-        inputs = batch['tensor_bw']
-        features = batch['tensor_org']
-        outputs, loss = train(optimizer, model, inputs, features)
+    for i in range(epoch_count):
+        start = time.time()
+        for batch in dataset_train:
+            inputs = batch['tensor_bw']
+            features = batch['tensor_org']
+            outputs, loss = train(optimizer, model, inputs, features)
 
-    display_ycbcr_batch_pyplot(features)
-    display_ycbcr_batch_pyplot(outputs)
-    print(outputs.shape)
-    end = time.time()
-    print(f'time: {(end - start)}')
+        display_ycbcr_batch_pyplot(features)
+        display_ycbcr_batch_pyplot(outputs)
+        end = time.time()
+        print(loss)
+        print(f'time: {(end - start)}')
+
