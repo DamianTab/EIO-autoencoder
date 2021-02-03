@@ -1,1 +1,1 @@
-from . imagenet_resized import load_dataset
+from . downsampled_imagenet import load_dataset
