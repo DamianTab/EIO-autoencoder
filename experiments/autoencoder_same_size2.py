@@ -1,3 +1,5 @@
+import sys
+
 import tensorflow as tf
 
 import ai
@@ -13,28 +15,39 @@ if __name__ == '__main__':
     # tensor_org - is the original colorful image in YCbCr color space; expected network outputs
     # tensor_bw - is the black and white representation; network input
     # load dataset
+    dataset_train, dataset_test = ai.datasets.load_dataset(train_examples_count=1024*8, validation_examples_count=128)
 
-    dataset_train, dataset_test = ai.datasets.load_dataset(train_examples_count=10000, validation_examples_count=20,
-                                                           batch_size=1000)
+    if len(sys.argv) > 1:
+        model_name = sys.argv[1]
+        model = load_model(name=model_name)
+    else:
+        model_name = 'Test'
+        model = ai.models.AutoEncoder(batch_normalization=True, dropout_rate=0.1, l2_regularization=0.1)
 
-    model = ai.models.AutoEncoder()
     optimizer = tf.optimizers.Adam(0.0001)
-    model.compile(optimizer=optimizer, loss='mean_squared_error', metrics=['mae'])
+    model.compile(optimizer=optimizer, loss='mean_squared_error', metrics=['mae'])  # MeanAbsoluteError
 
+    best_metric = 1
     epoch_count = 100
     for i in range(epoch_count):
         print(f'=== Epoch {i} ===')
         for batch in dataset_train:
-            model.fit(batch['tensor_bw'], batch['tensor_org'])
+            inputs = tf.expand_dims(batch['tensor_org'][:, :, :, 0], axis=-1)
+            model.fit(inputs, batch['tensor_org'], batch_size=64)
         for batch in dataset_test:
-            results = model.evaluate(batch['tensor_bw'], batch['tensor_org'])
-            print(f'Validation loss: {results[0]}')
-            print(f'Validation MAE: {results[1]}')
-            break
+            inputs = tf.expand_dims(batch['tensor_org'][:, :, :, 0], axis=-1)
+            results = model.evaluate(inputs, batch['tensor_org'], batch_size=64)
+
+        if best_metric > results[1]:
+            best_metric = results[1]
+            save_model(model, name="Best")
+
+        save_model(model, name=model_name)
+        print(f'Validation loss: {results[0]}')
+        print(f'Validation MAE: {results[1]}\n')
 
     for batch in dataset_test:
-        pred = model.predict(batch['tensor_bw'])
+        inputs = tf.expand_dims(batch['tensor_org'][:, :, :, 0], axis=-1)
+        pred = model.predict(inputs)
         display_compare_results_pyplot(batch['tensor_org'], pred, 10)
         break
-
-    save_model(model)

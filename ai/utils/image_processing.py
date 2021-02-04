@@ -2,7 +2,7 @@ import tensorflow as tf
 import tensorflow_io as tfio
 
 
-# @tf.function
+@tf.function
 def prepare_image_as_input(x):
     image = x['image']
 
