@@ -32,9 +32,11 @@ if __name__ == '__main__':
     for i in range(epoch_count):
         print(f'=== Epoch {i} ===')
         for batch in dataset_train:
-            model.fit(batch['tensor_bw'], batch['tensor_org'], batch_size=64)
+            inputs = tf.expand_dims(batch['tensor_org'][:, :, :, 0], axis=-1)
+            model.fit(inputs, batch['tensor_org'], batch_size=64)
         for batch in dataset_test:
-            results = model.evaluate(batch['tensor_bw'], batch['tensor_org'], batch_size=64)
+            inputs = tf.expand_dims(batch['tensor_org'][:, :, :, 0], axis=-1)
+            results = model.evaluate(inputs, batch['tensor_org'], batch_size=64)
 
         if best_metric > results[1]:
             best_metric = results[1]
@@ -45,6 +47,7 @@ if __name__ == '__main__':
         print(f'Validation MAE: {results[1]}\n')
 
     for batch in dataset_test:
-        pred = model.predict(batch['tensor_bw'])
+        inputs = tf.expand_dims(batch['tensor_org'][:, :, :, 0], axis=-1)
+        pred = model.predict(inputs)
         display_compare_results_pyplot(batch['tensor_org'], pred, 10)
         break
