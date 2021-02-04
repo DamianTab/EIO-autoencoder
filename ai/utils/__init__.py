@@ -12,3 +12,4 @@ from .display import \
     display_bw_batch_pyplot, \
     display_ycbcr_batch_pyplot, \
     display_compare_results_pyplot
+from .storage import save_model, load_model
