@@ -40,3 +40,21 @@ def display_compare_results_pyplot(originals, predictions, display_count=3):
         ax2.set_title('Actual output')
         ax2.imshow(pred_rgb)
         plt.show()
+
+
+def display_compare_results_pyplot2(inputs, originals, predictions, display_count=3):
+    for i in range(display_count):
+        fix, (ax1, ax2, ax3) = plt.subplots(1, 3)
+        input_bw = tensor2image(inputs[i])
+        orig_rgb = tfio.experimental.color.ycbcr_to_rgb(tensor2image(originals[i]))
+        pred_rgb = tfio.experimental.color.ycbcr_to_rgb(tensor2image(predictions[i]))
+        ax1.axis('off')
+        ax1.set_title('Input')
+        ax1.imshow(input_bw, cmap='gray')
+        ax2.axis('off')
+        ax2.set_title('Expected output')
+        ax2.imshow(orig_rgb)
+        ax3.axis('off')
+        ax3.set_title('Actual output')
+        ax3.imshow(pred_rgb)
+        plt.show()
