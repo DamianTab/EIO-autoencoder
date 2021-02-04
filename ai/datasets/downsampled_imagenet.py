@@ -37,8 +37,8 @@ def load_dataset(train_examples_count=10, validation_examples_count=10, batch_si
     #     pass
 
     # for x in dataset_train:
-    #     display_bw_batch_pyplot(x['tensor_bw'])
-    #     display_ycbcr_batch_pyplot(x['tensor_org'])
+    #     # display_bw_batch_pyplot(x['tensor_bw'])
+    #     # display_ycbcr_batch_pyplot(x['tensor_org'])
     #     pass
 
     return dataset_train, dataset_validation

@@ -1,7 +1,7 @@
 import sys
 
 import ai
-from ai.utils import display_compare_results_pyplot, load_model, save_model
+from ai.utils import display_compare_results_pyplot, load_model
 
 if __name__ == '__main__':
     # Without this computation on the GPU may not work.
@@ -14,8 +14,8 @@ if __name__ == '__main__':
     # tensor_bw - is the black and white representation; network input
     # load dataset
 
-    _, dataset_test = ai.datasets.load_dataset(train_examples_count=1024*8, validation_examples_count=128,
-                                                           batch_size=128)
+    _, dataset_test = ai.datasets.load_dataset(train_examples_count=1024 * 8, validation_examples_count=128,
+                                               batch_size=128)
 
     if len(sys.argv) > 1:
         model = load_model(name=sys.argv[1])
