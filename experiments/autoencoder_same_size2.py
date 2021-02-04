@@ -15,16 +15,14 @@ if __name__ == '__main__':
     # tensor_org - is the original colorful image in YCbCr color space; expected network outputs
     # tensor_bw - is the black and white representation; network input
     # load dataset
-    batch_size = 1024
-    dataset_train, dataset_test = ai.datasets.load_dataset(train_examples_count=1024 * 8, validation_examples_count=128,
-                                                           batch_size=batch_size)
+    dataset_train, dataset_test = ai.datasets.load_dataset(train_examples_count=1024*8, validation_examples_count=128)
 
     if len(sys.argv) > 1:
         model_name = sys.argv[1]
         model = load_model(name=model_name)
     else:
         model_name = 'Test'
-        model = ai.models.AutoEncoder()
+        model = ai.models.AutoEncoder(batch_normalization=True, dropout_rate=0, l2_regularization=0)
 
     optimizer = tf.optimizers.Adam(0.0001)
     model.compile(optimizer=optimizer, loss='mean_squared_error', metrics=['mae'])  # MeanAbsoluteError

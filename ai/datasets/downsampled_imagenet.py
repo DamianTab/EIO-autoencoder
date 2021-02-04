@@ -4,10 +4,9 @@ from ..utils import prepare_image_as_input
 
 
 # This dataset is quite large so we can limit element count to speed up development
-def load_dataset(train_examples_count=10, validation_examples_count=10, batch_size=5):
+def load_dataset(train_examples_count=10, validation_examples_count=10):
     # TODO: Zbiór walidacyjny chyba nie musi być batchowany
     datasets, info = tfds.load('downsampled_imagenet/64x64', with_info=True)
-    # datasets, info = tfds.load('imagenet_resized/8x8', with_info=True)
     dataset_train = datasets['train']
     dataset_validation = datasets['validation']
 
@@ -21,13 +20,13 @@ def load_dataset(train_examples_count=10, validation_examples_count=10, batch_si
         .take(train_examples_count)\
         .shuffle(train_examples_count)\
         .map(prepare_image_as_input)\
-        .batch(batch_size)
+        .batch(train_examples_count)
 
     dataset_validation = dataset_validation\
         .take(validation_examples_count)\
         .shuffle(validation_examples_count)\
         .map(prepare_image_as_input)\
-        .batch(batch_size)
+        .batch(validation_examples_count)
 
     # Zostawiam tymczasowo, żeby było łatwo debuggerem podejrzeć jak wyglądają elementy w batchu
     # from ..utils import display_ycbcr_batch_pyplot, display_bw_batch_pyplot
