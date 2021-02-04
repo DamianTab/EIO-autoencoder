@@ -22,7 +22,7 @@ if __name__ == '__main__':
         model = load_model(name=model_name)
     else:
         model_name = 'Test'
-        model = ai.models.AutoEncoder(batch_normalization=True, dropout_rate=0, l2_regularization=0)
+        model = ai.models.AutoEncoder(batch_normalization=True, dropout_rate=0.1, l2_regularization=0.1)
 
     optimizer = tf.optimizers.Adam(0.0001)
     model.compile(optimizer=optimizer, loss='mean_squared_error', metrics=['mae'])  # MeanAbsoluteError
