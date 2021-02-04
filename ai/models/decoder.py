@@ -18,7 +18,7 @@ class Decoder(Model):
         self.conv_3 = Conv2D(8, 3, activation='relu', padding='same', kernel_regularizer=regularizers.l2(l2_regularization))
         self.upsampling_3 = UpSampling2D((2, 2))
 
-        self.conv_out = Conv2D(3, 3, activation='tanh', padding='same', kernel_regularizer=regularizers.l2(l2_regularization))
+        self.conv_out = Conv2D(2, 3, activation='tanh', padding='same', kernel_regularizer=regularizers.l2(l2_regularization))
 
     def call(self, inputs):
         x = self.conv_1(inputs)

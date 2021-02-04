@@ -15,7 +15,7 @@ if __name__ == '__main__':
     # tensor_org - is the original colorful image in YCbCr color space; expected network outputs
     # tensor_bw - is the black and white representation; network input
     # load dataset
-    dataset_train, dataset_test = ai.datasets.load_dataset(train_examples_count=1024*8, validation_examples_count=128)
+    dataset_train, dataset_test = ai.datasets.load_dataset(train_examples_count=1024 * 8, validation_examples_count=128)
 
     if len(sys.argv) > 1:
         model_name = sys.argv[1]
@@ -32,9 +32,9 @@ if __name__ == '__main__':
     for i in range(epoch_count):
         print(f'=== Epoch {i} ===')
         for batch in dataset_train:
-            model.fit(batch['tensor_bw'], batch['tensor_org'], batch_size=64)
+            model.fit(batch['tensor_bw'], batch['tensor_org'][:, :, :, 1:], batch_size=64)
         for batch in dataset_test:
-            results = model.evaluate(batch['tensor_bw'], batch['tensor_org'], batch_size=64)
+            results = model.evaluate(batch['tensor_bw'], batch['tensor_org'][:, :, :, 1:], batch_size=64)
 
         if best_metric > results[1]:
             best_metric = results[1]
