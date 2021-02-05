@@ -1,0 +1,7 @@
+batch_size: 40
+image_size: (128 x 128)
+epoch_count: 20
+batch_normalization: True
+dropout_rate: 0
+l2_regularization: 0
+momentum: 0.5
