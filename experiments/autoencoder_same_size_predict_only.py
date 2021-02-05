@@ -17,5 +17,5 @@ if __name__ == '__main__':
     for batch in dataset_test:
         inputs = tf.expand_dims(batch[:, :, :, 0], axis=-1)
         pred = model.predict(inputs)
-        display_compare_results_pyplot2(inputs, batch, pred, 1)
+        display_compare_results_pyplot2(inputs, batch, pred, 3)
         break
