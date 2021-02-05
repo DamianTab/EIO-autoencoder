@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import tensorflow_io as tfio
+import tensorflow as tf
 
 from .image_processing import tensor2image
 
@@ -29,6 +30,7 @@ def display_bw_batch_pyplot(batch):
 
 
 def display_compare_results_pyplot(originals, predictions, display_count=3):
+    display_count = min(display_count, originals.shape[0])
     for i in range(display_count):
         fix, (ax1, ax2) = plt.subplots(1, 2)
         orig_rgb = tfio.experimental.color.ycbcr_to_rgb(tensor2image(originals[i]))
@@ -43,6 +45,7 @@ def display_compare_results_pyplot(originals, predictions, display_count=3):
 
 
 def display_compare_results_pyplot2(inputs, originals, predictions, display_count=3):
+    display_count = min(display_count, originals.shape[0])
     for i in range(display_count):
         fix, (ax1, ax2, ax3) = plt.subplots(1, 3)
         input_bw = tensor2image(inputs[i])
@@ -58,3 +61,7 @@ def display_compare_results_pyplot2(inputs, originals, predictions, display_coun
         ax3.set_title('Actual output')
         ax3.imshow(pred_rgb)
         plt.show()
+
+
+def save_image(file_name, image):
+    tf.io.write_file(file_name, tf.io.encode_png(image))

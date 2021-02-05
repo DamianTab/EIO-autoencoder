@@ -1,6 +1,3 @@
-from .autoencoder import AutoEncoder
-from .decoder import Decoder
-from .encoder import Encoder
-from .decoder_bigger import BiggerDecoder
-from .encoder_bigger import BiggerEncoder
-
+from .autoencoder.autoencoder import AutoEncoder
+from .bigger_autoencoder.autoencoder_bigger import BiggerAutoEncoder
+from .bigger_autoencoder_reg.autoencoder_bigger_reg import BiggerAutoEncoderReg

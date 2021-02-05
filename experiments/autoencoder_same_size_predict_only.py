@@ -1,7 +1,7 @@
 import sys
 
 import ai
-from ai.utils import display_compare_results_pyplot, load_model
+from ai.utils import display_compare_results_pyplot2, load_model
 
 if __name__ == '__main__':
     # Without this computation on the GPU may not work.
@@ -14,7 +14,7 @@ if __name__ == '__main__':
     # tensor_bw - is the black and white representation; network input
     # load dataset
 
-    _, dataset_test = ai.datasets.load_dataset(train_examples_count=1024 * 8, validation_examples_count=128)
+    _, dataset_test = ai.datasets.landscapes.load_dataset(image_size=(1024, 1800))
 
     if len(sys.argv) > 1:
         model = load_model(name=sys.argv[1])
@@ -22,5 +22,5 @@ if __name__ == '__main__':
         model = load_model()
     for batch in dataset_test:
         pred = model.predict(batch['tensor_bw'])
-        display_compare_results_pyplot(batch['tensor_org'], pred, 15)
+        display_compare_results_pyplot2(batch['tensor_bw'], batch['tensor_org'], pred, 1)
         break
